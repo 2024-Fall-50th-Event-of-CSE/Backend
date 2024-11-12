@@ -63,7 +63,7 @@ jobs:
         run: sudo docker stop web_50th_backend 2>/dev/null || true
 
       - name: run container using Docker-Compose
-        run: sudo docker compose -f .web-docker-compose-setup.yml up -d web_50th_backend
+        run: sudo docker compose -f ../../../../../.web-docker-compose-setup.yml up -d web_50th_backend
 
       - name: remove old image
         run: sudo docker system prune -f
