@@ -18,7 +18,7 @@ permissions: # permit only reading the source code in repository.
 jobs:
   # Build SpringBoot Application.
   build-docker-image:
-    runs-on: self-hosted
+    runs-on: 50th_backend
     steps: # Grouping the step of running.
     - uses: actions/checkout@v3
     # 1.
@@ -39,31 +39,16 @@ jobs:
     - name: docker image build
       run: docker build -t knu_cse_sdd/web_50th_backend .
 
-    # # 5. 
-    # - name: docker login
-    #   uses: docker/login-action@v2
-    #   with:
-    #     username: ${{ secrets.DOCKERHUB_USER }}
-    #     password: ${{ secrets.DOCKERHUB_PW }}
-
-    # 6.
-    # - name: dockerHub push
-    #   run: docker push ${{ secrets.DOCKERHUB_USER }}/benchmark
-
   run-docker-image:
-    # running this step is depend on previous step.
     needs: build-docker-image
-    runs-on: self-hosted
+    runs-on: 50th_backend
 
     steps:
-      # - name: pull image
-      #   run: sudo docker pull ${{ secrets.DOCKERHUB_USER }}/benchmark
-
       - name: halt container
-        run: sudo docker stop web_50th_backend 2>/dev/null || true
+        run: docker stop web_50th_backend 2>/dev/null || true
 
       - name: run container using Docker-Compose
-        run: sudo docker compose -f .web-docker-compose-setup.yml up -d web_50th_backend
+        run: docker compose -f ../../../../.web-docker-compose-setup.yml up -d web_50th_backend
 
       - name: remove old image
-        run: sudo docker system prune -f
+        run: docker system prune -f
